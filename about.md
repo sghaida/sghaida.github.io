@@ -8,6 +8,7 @@ order: 2
 <img src="/assets/sghaida.jpg" width="200" alt="sghaida" style="float: left; margin: 0 1.5em 15px 0; min-width: 150px; max-width: 45%" />
 
 My name is Saddam Abu Ghaida. I do software for living, but my main interest is Philosophy, Theology and social sciences in the abstract. I'm Palestinian but never been there. born and raised in Jordan, until i reached to the age of reasoning. :) 
+</p>
 
 ## Social profile
 
