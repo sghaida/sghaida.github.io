@@ -28,7 +28,7 @@ twitter_username: sghaida
 github_username:  sghaida
 
 # Build settings
-theme: jekyll-theme-primer
+# theme: jekyll-theme-primer
 plugins:
   - jekyll-feed
   - jekyll-paginate
