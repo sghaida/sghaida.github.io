@@ -22,7 +22,7 @@ title: /dev/urandom >> thoughts
 email: saddam.abughaida@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   this is my blog that has misc thought about tech, philosophy, theology, and whatever i think about 
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/categories" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: sghaida
 github_username:  sghaida

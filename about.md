@@ -16,3 +16,4 @@ My name is Saddam Abu Ghaida. I do software for living, but my main interest is 
 * [Code Project](https://www.codeproject.com/script/Membership/View.aspx?mid=7086044){:target="_blank"} - some other stuff that i've done
 * [Stack overflow](https://stackoverflow.com/users/433646/saddam-abu-ghaida){:target="_blank"} - stuff that i blabbered about, or blabbering 
 * [LinkedIn](http://www.linkedin.com/in/sghaida){:target="_blank"} - My marketing profile
+<p>

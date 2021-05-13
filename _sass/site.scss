@@ -1,8 +1,8 @@
 @charset "utf-8";
 
-$brand-color:           rgb(98, 98, 98);
+$brand-color:           rgb(151, 151, 151);
 $text-color:            #000000;
-$gutter-color:          #525252;
+$gutter-color:          #858585;
 $background-color:      #ffffff;
 
 $link-base-color:       #506be4;
@@ -11,8 +11,8 @@ $link-visited-color:    darken($link-base-color, 15%);
 $table-text-color:      lighten($text-color, 20%);
 $table-zebra-color:     lighten($background-color, 7%);
 $table-header-bg-color: lighten($background-color, 12%);
-$table-header-border:   #ccc;
-$table-border-color:    #666;
+$table-header-border:   rgb(209, 209, 209);
+$table-border-color:    rgb(90, 89, 89);
 
 $base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Segoe UI Symbol", "Segoe UI Emoji", "Apple Color Emoji", Roboto, Helvetica, Arial, sans-serif;
 $base-font-size:   16px;
