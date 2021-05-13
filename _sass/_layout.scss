@@ -220,10 +220,6 @@
 }
 
 
-.post {
-  height: 80vh;
-}
-
 /**
  * Page content
  */
@@ -231,14 +227,30 @@
   flex: 1 0 auto;
 }
 
-.page-content .wrapper{
-  height: 100%;
-  padding-bottom: 10%;
+.page-content .wrapper {
+  padding-bottom: 5%;
   padding-top: 5%;
+}
+
+.page-content .wrapper .post {
+  min-height: 80vh ;
+  max-height: 80vh;
+  overflow: auto;
+  
+}
+
+.post {
+  overflow: auto
 }
 
 .page-heading {
   @include relative-font-size(2);
+}
+
+.post {
+  height: 80vh;
+  overflow: visible;
+  padding-bottom: 100px;
 }
 
 .post-list-heading {
@@ -377,6 +389,10 @@
       }
     }
   }
+}
+
+.pager {
+  margin-bottom: 5%;
 }
 
 
