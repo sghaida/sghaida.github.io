@@ -9,9 +9,6 @@ categories: [politics]
 i wasn't following the news for quite sometime as everything happens around is predictable and i would say that you dont need news to tell you whats going on, since you live the news in the streets and in people eyes, thoughts, then again why would you watch something just contributes negatively to your stress and willbeing. some people i noticed that they are addicted to negitivity and this would be the reason why would people follow the news. yet again there is a better way to get the news and i would say the most important source is the street, as it adds some humar to the news telling, with some sense of exaduration regarding what to come and what to expect.   
 
 
-i wasn't following the news for quite sometime as everything happens around is predictable and i would say that you don't need news to tell you whats going on, since you live the news in the streets, in people eyes, thoughts, then again why would you watch something just contributes negatively to your stress and well-being. some people i noticed that they are addicted to negativity and this would be the reason why would some people follow the news in an addictive way. yet again there is a better way to get the news and i would say the most important source is the street, as it adds some humor to the narration, with some sense of exaggeration regarding what to come and what to expect, knowing that the foundation of the those news are being depicted from the news agencies. 
-
-
 Street news is an interesting source of information not only for the aforementioned reasons but because of the diversity regarding understanding a single event reasoning, background and the analysis how the event is going to be unfold. Coming from street news, I see that there is more honesty and integrity comparing the rigid and dishonest news that you hear or see in the news channels.
 
 
