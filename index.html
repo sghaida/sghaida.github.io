@@ -11,7 +11,7 @@ layout: default
     {%- if page.list_title -%}
     <h2 class="post-list-heading">{{ page.list_title }}</h2>
     {%- endif -%}
-    <ul class="post-list">
+    <ul class="post-list" style="min-height: 80vh;">
         {%- for post in paginator.posts -%}
         <li>
             <span class="post-meta">{{ post.date | date: site.date_format }}</span>

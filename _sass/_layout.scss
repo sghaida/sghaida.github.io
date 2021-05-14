@@ -219,7 +219,6 @@
   }
 }
 
-
 /**
  * Page content
  */
@@ -260,6 +259,8 @@
 .post-list {
   margin-left: 0;
   list-style: none;
+  min-height: 80vh !important;
+  max-height: 80vh;
 
   > li {
     margin-bottom: $spacing-unit;
