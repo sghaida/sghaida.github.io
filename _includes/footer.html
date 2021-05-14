@@ -1,33 +1,30 @@
-<footer class="site-footer h-card">
-    <data class="u-url"
-          href="{{ "/" | relative_url }}"></data>
+<!--
+  The Footer
+-->
 
-    <div class="wrapper">
-
-        <div class="footer-col-wrapper">
-            <div class="footer-col">
-                <h2 class="footer-heading">{{ site.title | escape }}</h2>
-                {%- if site.author %}
-                <ul class="contact-list">
-                    {% if site.author.name -%}
-                    <li class="p-name">{{ site.author.name | escape }}</li>
-                    {% endif -%}
-                    {% if site.author.email -%}
-                    <li><a class="u-email"
-                           href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></li>
-                    {%- endif %}
-                </ul>
-                {%- endif %}
-            </div>
-            <div class="footer-col">
-                <p>{{ site.description | escape }}</p>
-            </div>
-        </div>
-
-        <div class="social-links">
-            {%- include social.html -%}
-        </div>
-
+<footer class="d-flex w-100 justify-content-center">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="footer-left">
+      <p class="mb-0">
+        © {{ 'now' | date: "%Y" }}
+        <a href="{{ site.social.links[0] }}">{{ site.social.name }}</a>.
+        {% if site.data.rights.brief %}
+        <span data-toggle="tooltip" data-placement="top"
+          title="{{ site.data.rights.verbose }}">{{ site.data.rights.brief }}</span>
+        {% endif %}
+      </p>
     </div>
 
+    <div class="footer-right">
+      <p class="mb-0">
+        Powered by
+        <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a>
+        with
+        <a href="https://github.com/cotes2020/jekyll-theme-chirpy"
+          target="_blank" rel="noopener">Chirpy</a>
+        theme.
+      </p>
+    </div>
+
+  </div> <!-- div.d-flex -->
 </footer>

@@ -1,53 +1,129 @@
 ---
 layout: default
+# The posts' layout
 ---
-<div class="post-nav">
-    {%- if page.previous -%}
-    <span class="post-previous">
-        <a href="{{ page.previous.url }}"
-           rel="prev">← Previous Post</a>
-    </span>
-    {%- endif -%}
-    {%- if page.next -%}
-    <span class="post-next">
-        <a href="{{ page.next.url }}"
-           rel="next">Next Post →</a>
-    </span>
-    {%- endif -%}
-</div>
 
-<article class="post h-entry"
-         itemscope
-         itemtype="http://schema.org/BlogPosting">
+<div class="row">
 
-    <header class="post-header">
-        <h1 class="post-title p-name"
-            itemprop="name headline">{{ page.title | escape }}</h1>
-        <p class="post-meta">
-            <time class="dt-published"
-                  datetime="{{ page.date | date_to_xmlschema }}"
-                  itemprop="datePublished">
-                {{ page.date | date: site.date_format }}
-            </time>
-            {%- if page.categories -%}
-            • Posted in
-            {% for category in page.categories %}
-            <a href="{% link categories.html %}#{{category | uri_escape | downcase }}">{{ category }}</a>
-            {%- if forloop.last == false %}, {% endif -%}
-            {% endfor %}
-            {%- endif -%}</p>
-    </header>
+  <div id="post-wrapper" class="col-12 col-lg-11 col-xl-8">
 
-    <div class="post-content e-content"
-         itemprop="articleBody">
+    <div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4">
+
+      <h1 data-toc-skip>{{ page.title }}</h1>
+
+      <div class="post-meta text-muted d-flex flex-column">
+        <!-- Published date and author -->
+        <div>
+          <span class="semi-bold">
+            {{ page.author | default: site.social.name }}
+          </span>
+          {% include timeago.html date=page.date prep="on" tooltip=true %}
+        </div>
+
+        <div>
+          <!-- lastmod -->
+          {% if page.last_modified_at %}
+          <span>
+            {% include timeago.html date=page.last_modified_at
+              class="lastmod" prefix="Updated" tooltip=true %}
+          </span>
+          {% endif %}
+
+          <!-- read time -->
+          {% include read-time.html content=content %}
+
+          <!-- page views -->
+          {% if site.google_analytics.pv.proxy_endpoint or site.google_analytics.pv.cache_path %}
+          <span id="pv" class="pageviews"><i class="fas fa-spinner fa-spin fa-fw"></i></span>
+          {% endif %}
+
+        </div>
+
+      </div> <!-- .post-meta -->
+
+      <div class="post-content">
+
+        {% if page.image.src %}
+          <img src="{{ page.image.src }}" class="preview-img" alt="{{ page.image.alt | default: "Preview Image" }}">
+        {% endif %}
+
         {{ content }}
-    </div>
 
-    {%- if site.disqus.shortname -%}
-    {%- include disqus_comments.html -%}
-    {%- endif -%}
+      </div>
 
-    <a class="u-url"
-       href="{{ page.url | relative_url }}"
-       hidden></a>
-</article>
+      <div class="post-tail-wrapper text-muted">
+
+        <!-- categories -->
+        {% if page.categories.size > 0 %}
+        <div class="post-meta mb-3">
+          <i class="far fa-folder-open fa-fw mr-1"></i>
+          {% for category in page.categories %}
+            <a href='{{ site.baseurl }}/categories/{{ category | slugify | url_encode }}/'>{{ category }}</a>
+            {%- unless forloop.last -%}, {%- endunless -%}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- tags -->
+        {% if page.tags.size > 0 %}
+        <div class="post-tags">
+          <i class="fa fa-tags fa-fw mr-1"></i>
+          {% for tag in page.tags %}
+          <a href="{{ site.baseurl }}/tags/{{ tag | slugify | url_encode }}/"
+            class="post-tag no-text-decoration" >
+            {{- tag -}}
+          </a>
+          {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="post-tail-bottom
+          d-flex justify-content-between align-items-center mt-3 pt-5 pb-2">
+          {% if site.data.rights.license %}
+          <div class="license-wrapper">
+            This post is licensed under
+            <a href="{{ site.data.rights.license.link }}">{{ site.data.rights.license.name }}</a>
+            by the author.
+          </div>
+          {% endif %}
+
+          {% include post-sharing.html %}
+
+        </div><!-- .post-tail-bottom -->
+
+      </div><!-- div.post-tail -->
+
+    </div> <!-- .post -->
+
+
+  </div> <!-- #post-wrapper -->
+
+  {% assign enable_toc = false %}
+
+  {% if site.toc and page.toc %}
+    {% if content contains '<h2' or content contains '<h3' %}
+      {% assign enable_toc = true %}
+    {% endif %}
+  {% endif %}
+
+  {% include panel.html toc=enable_toc %}
+
+</div> <!-- .row -->
+
+<div class="row">
+  <div class="col-12 col-lg-11 col-xl-8">
+    <div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4">
+
+    {% include related-posts.html %}
+
+    {% include post-nav.html %}
+
+    {% if site.disqus.comments and page.comments %}
+      {% include disqus.html %}
+    {% endif %}
+
+    </div> <!-- #post-extend-wrapper -->
+
+  </div> <!-- .col-* -->
+
+</div> <!-- .row -->
