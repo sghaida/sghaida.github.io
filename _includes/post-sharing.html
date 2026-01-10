@@ -1,0 +1,53 @@
+<div class="post-sharing d-inline-block ms-2">
+  <button
+    type="button"
+    class="share-btn btn btn-outline-secondary btn-sm"
+    aria-label="Copy link"
+    data-url="{{ page.url | absolute_url }}"
+  >
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </button>
+
+  <a
+    class="share-twitter btn btn-outline-secondary btn-sm ms-1"
+    href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ page.url | absolute_url | uri_escape }}"
+    target="_blank" rel="noopener noreferrer"
+    aria-label="Share on Twitter"
+  >
+    <i class="fab fa-twitter" aria-hidden="true"></i>
+  </a>
+
+  <a
+    class="share-linkedin btn btn-outline-secondary btn-sm ms-1"
+    href="https://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absolute_url | uri_escape }}&title={{ page.title | uri_escape }}"
+    target="_blank" rel="noopener noreferrer"
+    aria-label="Share on LinkedIn"
+  >
+    <i class="fab fa-linkedin" aria-hidden="true"></i>
+  </a>
+
+  <span class="share-feedback visually-hidden ms-2" role="status" aria-live="polite">Copied</span>
+</div>
+
+<script>
+;(function(){
+  var buttons = document.querySelectorAll('.post-sharing .share-btn')
+  if(!buttons || buttons.length === 0) return
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var url = btn.getAttribute('data-url') || window.location.href
+      var container = btn.closest('.post-sharing')
+      var fb = container && container.querySelector('.share-feedback')
+
+      function showFeedback(){ if(fb){ fb.classList.remove('visually-hidden'); fb.textContent = 'Copied'; setTimeout(function(){ fb.classList.add('visually-hidden') }, 1400) } }
+
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(showFeedback).catch(function(){ window.location.href = 'mailto:?body=' + encodeURIComponent(url) })
+      } else {
+        try{ var ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showFeedback() }
+        catch(e){ window.location.href = 'mailto:?body=' + encodeURIComponent(url) }
+      }
+    })
+  })
+})()
+</script>

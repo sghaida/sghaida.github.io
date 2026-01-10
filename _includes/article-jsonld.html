@@ -1,0 +1,32 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url }}"
+  },
+  "headline": {{ page.title | strip_newlines | jsonify }},
+  "description": {{ page.description | default: site.description | strip_newlines | jsonify }},
+  {% if page.image %}
+  "image": [{{ (page.image.path | default: page.image | absolute_url) | jsonify }}],
+  {% elsif site.social_preview_image %}
+  "image": [{{ (site.social_preview_image | absolute_url) | jsonify }}],
+  {% endif %}
+  "author": {
+    "@type": "Person",
+    "name": {% if page.author %}{{ site.data.authors[page.author].name | jsonify }}{% else %}{{ site.social.name | jsonify }}{% endif %}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ site.title | jsonify }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ (site.logo | default: site.avatar | default: '/assets/img/me.jpg') | absolute_url | jsonify }}
+    }
+  },
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "url": "{{ page.url | absolute_url }}"
+}
+</script>

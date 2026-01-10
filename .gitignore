@@ -1,0 +1,24 @@
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+/.bundle/
+vendor/
+
+# OS
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# dotenv
+.env
+
+# Editor directories
+.vscode/
+.idea/
+
+# Bundler
+Gemfile.lock
