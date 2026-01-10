@@ -20,15 +20,29 @@
     .sidebar-social-icons a {
       line-height: 1;
     }
+
+    #sidebar #avatar,
+    .sidebar-avatar-large {
+      width: 150px !important;
+      height: 150px !important;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    #sidebar #avatar img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+    }
   </style>
 
   <header class="profile-wrapper">
-    <a href="{{ '/' | relative_url }}" id="avatar" class="rounded-circle">
+    <a href="{{ '/' | relative_url }}" id="avatar" class="rounded-circle sidebar-avatar-large">
       {%- if site.avatar != empty and site.avatar -%}
         {%- capture avatar_url -%}
           {% include media-url.html src=site.avatar %}
         {%- endcapture -%}
-        <img src="{{- avatar_url -}}" width="112" height="112" alt="avatar" onerror="this.style.display='none'">
+        <img src="{{- avatar_url -}}" width="170" height="170" alt="avatar" onerror="this.style.display='none'">
       {%- endif -%}
     </a>
 
