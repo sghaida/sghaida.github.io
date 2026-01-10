@@ -2,7 +2,7 @@
 layout: post
 title: "NTLM Squid Setup using antivirus"
 date: 2011-10-6 09:00:00 +0000
-categories: [security, network, infra]
+categories: [security, networking, infra]
 tags: [squid, security, infra]
 ---
 
