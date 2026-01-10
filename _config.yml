@@ -123,7 +123,7 @@ compress_html:
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: Saddam ABu Ghaiaa
+  name: Saddam Abu Ghaida
   email: saddam.abughaida@gmail.com            # change to your email address
   links:
     # The first element serves as the copyright owner's link
@@ -132,3 +132,10 @@ social:
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     - https://www.linkedin.com/in/sghaida
+
+  # Analytics (example)
+  # To enable Google Analytics (GA4) add your measurement id below and the
+  # theme will include the tracking snippet in production builds.
+analytics:
+  google:
+    id: G-MYGCEXHTDF

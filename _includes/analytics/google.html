@@ -1,0 +1,10 @@
+{%- assign ga_id = site.analytics.google.id -%}
+{%- if ga_id and ga_id != empty -%}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', '{{ ga_id }}', { 'anonymize_ip': true });
+  </script>
+{%- endif -%}
