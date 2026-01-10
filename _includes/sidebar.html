@@ -1,6 +1,15 @@
 <!-- The Side Bar -->
 
 <aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
+  {% assign twitter_url = '' %}
+  {% assign linkedin_url = '' %}
+  {% for link in site.social.links %}
+    {% if link contains 'twitter.com' and twitter_url == '' %}
+      {% assign twitter_url = link %}
+    {% elsif link contains 'linkedin.com' and linkedin_url == '' %}
+      {% assign linkedin_url = link %}
+    {% endif %}
+  {% endfor %}
   <header class="profile-wrapper">
     <a href="{{ '/' | relative_url }}" id="avatar" class="rounded-circle">
       {%- if site.avatar != empty and site.avatar -%}
@@ -13,6 +22,22 @@
 
     <a class="site-title d-block" href="{{ '/' | relative_url }}">{{ site.title }}</a>
     <p class="site-subtitle fst-italic mb-0">{{ site.tagline }}</p>
+    {% if twitter_url or linkedin_url %}
+      <div class="d-flex gap-2 mt-2">
+        {% if twitter_url %}
+          <a href="{{ twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="text-reset">
+            <i class="fab fa-twitter"></i>
+            <span class="visually-hidden">Twitter</span>
+          </a>
+        {% endif %}
+        {% if linkedin_url %}
+          <a href="{{ linkedin_url }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="text-reset">
+            <i class="fab fa-linkedin"></i>
+            <span class="visually-hidden">LinkedIn</span>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
   </header>
   <!-- .profile-wrapper -->
 

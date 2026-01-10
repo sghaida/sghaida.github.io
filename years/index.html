@@ -11,21 +11,48 @@ permalink: /years/
 {% assign per_page = 8 %}
 
 <section class="yearly-articles-page">
+  <style>
+    .year-controls {
+      justify-content: center;
+    }
+
+    .year-controls-list {
+      gap: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+    }
+
+    .year-trigger {
+      padding: 0.3rem 0.8rem;
+      font-size: 0.9rem;
+      min-width: auto;
+      border-radius: 999px;
+      border: 1px solid var(--tag-border, var(--btn-border-color));
+      background: transparent;
+      color: var(--text-muted-color);
+      transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: none;
+    }
+
+    .year-trigger.active,
+    .year-trigger:focus-visible,
+    .year-trigger:hover {
+      background: var(--btn-border-color);
+      color: var(--text-color);
+      box-shadow: var(--tag-shadow);
+    }
+  </style>
       <header class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
-        <div>
-          <p class="text-muted small mb-1">{{ locale.sidebar.yearly_articles | default: 'Articles grouped by year' }}</p>
-          <h1 class="fs-2 fw-bold">{{ page.title }}</h1>
-        </div>
     {% if posts_by_year.size > 0 %}
       <div class="year-controls w-100 w-md-auto">
-        <ul class="nav nav-pills gap-2 flex-wrap" role="tablist">
+        <div class="year-controls-list" role="tablist">
           {% for year_group in posts_by_year %}
             {% assign year_id = 'year-' | append: year_group.name %}
-            <li class="nav-item" role="presentation">
-              <button type="button" class="btn btn-sm btn-outline-primary{% if forloop.first %} active{% endif %}" data-year-nav="{{ year_id }}" aria-controls="{{ year_id }}" aria-selected="{{ forloop.first }}">{{ year_group.name }} ({{ year_group.items | size }})</button>
-            </li>
+            <button type="button" class="btn btn-outline-primary post-tag year-trigger{% if forloop.first %} active{% endif %}" data-year-nav="{{ year_id }}" aria-controls="{{ year_id }}" aria-selected="{{ forloop.first }}">{{ year_group.name }} ({{ year_group.items | size }})</button>
           {% endfor %}
-        </ul>
+        </div>
       </div>
     {% endif %}
   </header>
