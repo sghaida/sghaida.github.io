@@ -1,0 +1,188 @@
+---
+layout: page
+title: Yearly Articles
+permalink: /years/
+---
+
+{% assign current_lang = page.lang | default: site.lang %}
+{% assign locale = site.data.locales[current_lang] %}
+{% assign visible_posts = site.posts | where_exp: 'post', 'post.hidden != true' %}
+{% assign posts_by_year = visible_posts | group_by_exp: 'post', 'post.date | date: "%Y"' | sort: 'name' | reverse %}
+{% assign per_page = 8 %}
+
+<section class="yearly-articles-page">
+      <header class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
+        <div>
+          <p class="text-muted small mb-1">{{ locale.sidebar.yearly_articles | default: 'Articles grouped by year' }}</p>
+          <h1 class="fs-2 fw-bold">{{ page.title }}</h1>
+        </div>
+    {% if posts_by_year.size > 0 %}
+      <div class="year-controls w-100 w-md-auto">
+        <ul class="nav nav-pills gap-2 flex-wrap" role="tablist">
+          {% for year_group in posts_by_year %}
+            {% assign year_id = 'year-' | append: year_group.name %}
+            <li class="nav-item" role="presentation">
+              <button type="button" class="btn btn-sm btn-outline-primary{% if forloop.first %} active{% endif %}" data-year-nav="{{ year_id }}" aria-controls="{{ year_id }}" aria-selected="{{ forloop.first }}">{{ year_group.name }} ({{ year_group.items | size }})</button>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </header>
+
+      {% if posts_by_year.size == 0 %}
+        <p class="text-muted">{{ locale.sidebar.yearly_articles_empty | default: 'No articles published yet.' }}</p>
+  {% else %}
+    {% for year_group in posts_by_year %}
+      {% assign year_id = 'year-' | append: year_group.name %}
+      {% assign posts_for_year = year_group.items | sort: 'date' | reverse %}
+      {% assign total_posts = posts_for_year | size %}
+      {% assign page_count = total_posts | divided_by: per_page %}
+      {% assign remainder = total_posts | modulo: per_page %}
+      {% if remainder > 0 %}
+        {% assign page_count = page_count | plus: 1 %}
+      {% endif %}
+      {% if page_count == 0 %}
+        {% assign page_count = 1 %}
+      {% endif %}
+
+      <section class="year-section" data-year-section="{{ year_id }}" id="{{ year_id }}" {% unless forloop.first %}hidden{% endunless %}>
+        <header class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <p class="text-uppercase fs-6 mb-1 text-muted">{{ year_group.name }}</p>
+            <h2 class="fs-3 mb-0">{{ total_posts }} {{ locale.sidebar.articles_title | default: 'articles' }}</h2>
+          </div>
+          <div class="text-muted small">{{ locale.sidebar.per_page | default: 'Showing 8 posts per page' }}</div>
+        </header>
+
+        {% for page_num in (1..page_count) %}
+          {% assign start_index = per_page | times: page_num | minus: per_page %}
+          {% assign page_posts = posts_for_year | slice: start_index, per_page %}
+          <div class="year-page" data-year-page="{{ page_num }}" {% unless page_num == 1 %}hidden{% endunless %}>
+            <ul class="list-unstyled">
+              {% for post in page_posts %}
+                <li class="mb-4">
+                  <a class="fs-5 fw-semibold text-reset" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                  <p class="text-muted small mb-1">{{ post.date | date: '%B %-d, %Y' }}</p>
+                  <p class="text-muted mb-0">{% if post.excerpt %}{{ post.excerpt | strip_html | truncatewords: 25 }}{% endif %}</p>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endfor %}
+
+        {% if page_count > 1 %}
+          <div class="year-pagination d-flex flex-wrap gap-2 justify-content-center mt-4" data-year-pagination="{{ year_id }}" data-page-count="{{ page_count }}">
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-page-prev>← Newer</button>
+            <div class="btn-group" role="group">
+              {% for page_num in (1..page_count) %}
+                <button type="button" class="btn btn-sm btn-outline-secondary{% if page_num == 1 %} active{% endif %}" data-year-page="{{ page_num }}" aria-current="{% if page_num == 1 %}page{% else %}false{% endif %}">{{ page_num }}</button>
+              {% endfor %}
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-page-next>Older →</button>
+          </div>
+        {% endif %}
+      </section>
+    {% endfor %}
+  {% endif %}
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const yearSections = Array.from(document.querySelectorAll('[data-year-section]'));
+    const navButtons = Array.from(document.querySelectorAll('[data-year-nav]'));
+    const paginationContainers = Array.from(document.querySelectorAll('[data-year-pagination]'));
+    if (!yearSections.length || !navButtons.length) {
+      return;
+    }
+
+    const yearState = {};
+    yearSections.forEach((section) => {
+      const yearId = section.dataset.yearSection;
+      const pages = Array.from(section.querySelectorAll('[data-year-page]'));
+      yearState[yearId] = {
+        section,
+        pages,
+        pagination: document.querySelector(`[data-year-pagination="${yearId}"]`)
+      };
+    });
+
+    const showPage = (yearId, pageNum) => {
+      const entry = yearState[yearId];
+      if (!entry) return;
+      const target = Math.min(Math.max(pageNum, 1), entry.pages.length);
+      entry.pages.forEach((page) => {
+        page.hidden = Number(page.dataset.yearPage) !== target;
+      });
+      if (entry.pagination) {
+        const buttons = Array.from(entry.pagination.querySelectorAll('[data-year-page]'));
+        buttons.forEach((button) => {
+          const current = Number(button.dataset.yearPage);
+          const isActive = current === target;
+          button.classList.toggle('active', isActive);
+          button.setAttribute('aria-current', isActive ? 'page' : 'false');
+        });
+        const prevButton = entry.pagination.querySelector('[data-page-prev]');
+        const nextButton = entry.pagination.querySelector('[data-page-next]');
+        if (prevButton) prevButton.disabled = target === 1;
+        if (nextButton) nextButton.disabled = target === entry.pages.length;
+        entry.pagination.dataset.currentPage = target;
+      }
+    };
+
+    const showYear = (yearId, pageNum = 1) => {
+      if (!yearState[yearId]) return;
+      yearSections.forEach((section) => {
+        section.hidden = section.dataset.yearSection !== yearId;
+      });
+      navButtons.forEach((button) => {
+        const isActive = button.dataset.yearNav === yearId;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-selected', isActive);
+      });
+      if (history.replaceState) {
+        history.replaceState(null, '', `#${yearId}`);
+      } else {
+        location.hash = yearId;
+      }
+      showPage(yearId, pageNum);
+    };
+
+    navButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        showYear(button.dataset.yearNav, 1);
+      });
+    });
+
+    paginationContainers.forEach((container) => {
+      container.addEventListener('click', (event) => {
+        const target = event.target.closest('button');
+        if (!target) return;
+        const yearId = container.dataset.yearPagination;
+        if (target.dataset.yearPage) {
+          showPage(yearId, Number(target.dataset.yearPage));
+          return;
+        }
+        if (target.dataset.pagePrev) {
+          const currentPage = Number(container.dataset.currentPage || 1);
+          showPage(yearId, currentPage - 1);
+          return;
+        }
+        if (target.dataset.pageNext) {
+          const currentPage = Number(container.dataset.currentPage || 1);
+          showPage(yearId, currentPage + 1);
+        }
+      });
+    });
+
+    const initialHash = location.hash.replace('#', '') || navButtons[0].dataset.yearNav;
+    showYear(initialHash);
+
+    window.addEventListener('hashchange', () => {
+      const hashYear = location.hash.replace('#', '');
+      if (hashYear && yearState[hashYear]) {
+        showYear(hashYear);
+      }
+    });
+  });
+</script>

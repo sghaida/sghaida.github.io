@@ -5,7 +5,12 @@ layout: default
 {% include lang.html %}
 
 <div id="post-list" class="flex-grow-1 px-xl-1">
-  {% assign posts = site.posts | where_exp: 'item', 'item.hidden != true' %}
+  {% if paginator %}
+    {% assign pagination_posts = paginator.posts %}
+  {% else %}
+    {% assign pagination_posts = site.posts %}
+  {% endif %}
+  {% assign posts = pagination_posts | where_exp: 'item', 'item.hidden != true' %}
   {% for post in posts %}
     <article class="card-wrapper card">
       <a href="{{ post.url | relative_url }}" class="post-preview row g-0 flex-md-row-reverse">
@@ -55,3 +60,32 @@ layout: default
     </article>
   {% endfor %}
 </div>
+
+<!-- Pagination -->
+{% if paginator and paginator.total_pages > 1 %}
+  <nav aria-label="Pagination" class="d-flex justify-content-center my-5">
+    <ul class="pagination justify-content-center flex-wrap gap-1">
+      {% if paginator.previous_page %}
+        <li class="page-item">
+          <a class="page-link" href="{{ paginator.previous_page_path | relative_url }}">← Newer</a>
+        </li>
+      {% endif %}
+
+      {% for page_num in (1..paginator.total_pages) %}
+        <li class="page-item{% if page_num == paginator.page %} active{% endif %}">
+          {% if page_num == 1 %}
+            <a class="page-link" href="{{ '/' | relative_url }}">{{ page_num }}</a>
+          {% else %}
+            <a class="page-link" href="{{ site.paginate_path | replace: ':num', page_num | relative_url }}">{{ page_num }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+
+      {% if paginator.next_page %}
+        <li class="page-item">
+          <a class="page-link" href="{{ paginator.next_page_path | relative_url }}">Older →</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

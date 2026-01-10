@@ -7,29 +7,125 @@ layout: page
 
 {% assign df_strftime_m = site.data.locales[lang].df.archives.strftime | default: '/ %m' %}
 {% assign df_dayjs_m = site.data.locales[lang].df.archives.dayjs | default: '/ MM' %}
+{% assign posts = site.posts | where_exp: 'item', 'item.hidden != true' %}
+{% assign per_page = 8 %}
+{% assign total_posts = posts | size %}
+{% assign page_count = total_posts | divided_by: per_page %}
+{% assign remainder = total_posts | modulo: per_page %}
+{% if remainder > 0 %}
+  {% assign page_count = page_count | plus: 1 %}
+{% endif %}
+{% if page_count == 0 %}
+  {% assign page_count = 1 %}
+{% endif %}
 
 <div id="archives" class="pl-xl-3">
-  {% for post in site.posts %}
-    {% assign cur_year = post.date | date: '%Y' %}
+  {% for page_num in (1..page_count) %}
+    {% assign start_index = per_page | times: page_num | minus: per_page %}
+    {% assign page_posts = posts | slice: start_index, per_page %}
+    {% if page_posts.size > 0 %}
+      <div class="archive-page" data-page="{{ page_num }}" {% unless page_num == 1 %}hidden{% endunless %}>
+        {% assign last_year = nil %}
+        {% for post in page_posts %}
+          {% assign cur_year = post.date | date: '%Y' %}
+          {% if cur_year != last_year %}
+            {% unless forloop.first %}
+              </ul>
+            {% endunless %}
+            <time class="year lead d-block">{{ cur_year }}</time>
+            <ul class="list-unstyled">
+            {% assign last_year = cur_year %}
+          {% endif %}
 
-    {% if cur_year != last_year %}
-      {% unless forloop.first %}</ul>{% endunless %}
+          <li>
+            {% assign ts = post.date | date: '%s' %}
+            <span class="date day" data-ts="{{ ts }}" data-df="DD">{{ post.date | date: '%d' }}</span>
+            <span class="date month small text-muted ms-1" data-ts="{{ ts }}" data-df="{{ df_dayjs_m }}">
+              {{ post.date | date: df_strftime_m }}
+            </span>
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          </li>
 
-      <time class="year lead d-block">{{ cur_year }}</time>
-      {{ '<ul class="list-unstyled">' }}
-
-      {% assign last_year = cur_year %}
+          {% if forloop.last %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </div>
     {% endif %}
-
-    <li>
-      {% assign ts = post.date | date: '%s' %}
-      <span class="date day" data-ts="{{ ts }}" data-df="DD">{{ post.date | date: '%d' }}</span>
-      <span class="date month small text-muted ms-1" data-ts="{{ ts }}" data-df="{{ df_dayjs_m }}">
-        {{ post.date | date: df_strftime_m }}
-      </span>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    </li>
-
-    {% if forloop.last %}</ul>{% endif %}
   {% endfor %}
 </div>
+
+{% if page_count > 1 %}
+  <nav aria-label="Archives pagination" class="d-flex justify-content-center my-5">
+    <ul class="pagination justify-content-center gap-1 flex-wrap">
+      <li class="page-item">
+        <button type="button" class="page-link" data-archives-prev>← Newer</button>
+      </li>
+
+      {% for page_num in (1..page_count) %}
+        <li class="page-item">
+          <button type="button" class="page-link{% if page_num == 1 %} active{% endif %}" data-archives-page="{{ page_num }}">{{ page_num }}</button>
+        </li>
+      {% endfor %}
+
+      <li class="page-item">
+        <button type="button" class="page-link" data-archives-next>Older →</button>
+      </li>
+    </ul>
+  </nav>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const archivePages = Array.from(document.querySelectorAll('.archive-page'));
+      const pageButtons = Array.from(document.querySelectorAll('[data-archives-page]'));
+      const prevButton = document.querySelector('[data-archives-prev]');
+      const nextButton = document.querySelector('[data-archives-next]');
+      if (!archivePages.length || !pageButtons.length) {
+        return;
+      }
+
+      const totalPages = archivePages.length;
+      let currentPage = 1;
+
+      const updatePageState = (targetPage) => {
+        const nextPage = Math.min(Math.max(targetPage, 1), totalPages);
+        currentPage = nextPage;
+        archivePages.forEach((section) => {
+          section.hidden = Number(section.dataset.page) !== currentPage;
+        });
+        pageButtons.forEach((button) => {
+          const page = Number(button.dataset.archivesPage);
+          const isActive = page === currentPage;
+          button.classList.toggle('active', isActive);
+          button.setAttribute('aria-current', isActive ? 'page' : 'false');
+        });
+        if (prevButton) {
+          prevButton.disabled = currentPage === 1;
+        }
+        if (nextButton) {
+          nextButton.disabled = currentPage === totalPages;
+        }
+      };
+
+      pageButtons.forEach((button) => {
+        button.addEventListener('click', function () {
+          updatePageState(Number(this.dataset.archivesPage));
+        });
+      });
+
+      if (prevButton) {
+        prevButton.addEventListener('click', function () {
+          updatePageState(currentPage - 1);
+        });
+      }
+
+      if (nextButton) {
+        nextButton.addEventListener('click', function () {
+          updatePageState(currentPage + 1);
+        });
+      }
+
+      updatePageState(currentPage);
+    });
+  </script>
+{% endif %}
