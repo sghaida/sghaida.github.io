@@ -2,8 +2,8 @@
 layout: post
 title: "SNMP MIBS Extensions and how to use"
 date: 2011-10-3 09:00:00 +0000
-categories: [network, infra]
-tags: [network, infra]
+categories: [networking, infra]
+tags: [networking, infra]
 ---
 
 # Using `extend` in SNMP to Expose Custom Script Output
