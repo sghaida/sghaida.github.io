@@ -10,6 +10,18 @@
       {% assign linkedin_url = link %}
     {% endif %}
   {% endfor %}
+  <style>
+    .sidebar-social-icons {
+      display: flex;
+      gap: 0.85rem;
+      font-size: 1.35rem;
+    }
+
+    .sidebar-social-icons a {
+      line-height: 1;
+    }
+  </style>
+
   <header class="profile-wrapper">
     <a href="{{ '/' | relative_url }}" id="avatar" class="rounded-circle">
       {%- if site.avatar != empty and site.avatar -%}
@@ -23,7 +35,7 @@
     <a class="site-title d-block" href="{{ '/' | relative_url }}">{{ site.title }}</a>
     <p class="site-subtitle fst-italic mb-0">{{ site.tagline }}</p>
     {% if twitter_url or linkedin_url %}
-      <div class="d-flex gap-2 mt-2">
+      <div class="sidebar-social-icons mt-2">
         {% if twitter_url %}
           <a href="{{ twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="text-reset">
             <i class="fab fa-twitter"></i>
