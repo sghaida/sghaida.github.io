@@ -31,23 +31,24 @@
 
 <script>
 ;(function(){
-  var buttons = document.querySelectorAll('.post-sharing .share-btn')
-  if(!buttons || buttons.length === 0) return
-  buttons.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var url = btn.getAttribute('data-url') || window.location.href
-      var container = btn.closest('.post-sharing')
-      var fb = container && container.querySelector('.share-feedback')
+  function showFeedback(fb){ if(fb){ fb.classList.remove('visually-hidden'); fb.textContent = 'Copied'; setTimeout(function(){ fb.classList.add('visually-hidden') }, 1400) } }
 
-      function showFeedback(){ if(fb){ fb.classList.remove('visually-hidden'); fb.textContent = 'Copied'; setTimeout(function(){ fb.classList.add('visually-hidden') }, 1400) } }
+  function copyText(url, fb){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){ showFeedback(fb) }).catch(function(){ window.location.href = 'mailto:?body=' + encodeURIComponent(url) })
+    } else {
+      try{ var ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showFeedback(fb) }
+      catch(e){ window.location.href = 'mailto:?body=' + encodeURIComponent(url) }
+    }
+  }
 
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(url).then(showFeedback).catch(function(){ window.location.href = 'mailto:?body=' + encodeURIComponent(url) })
-      } else {
-        try{ var ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showFeedback() }
-        catch(e){ window.location.href = 'mailto:?body=' + encodeURIComponent(url) }
-      }
-    })
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.share-btn')
+    if(!btn) return
+    var url = btn.getAttribute('data-url') || window.location.href
+    var container = btn.closest('.post-sharing')
+    var fb = container && container.querySelector('.share-feedback')
+    copyText(url, fb)
   })
 })()
 </script>
