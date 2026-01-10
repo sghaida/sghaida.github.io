@@ -1,0 +1,8 @@
+REPLACE_ME: This is a placeholder for `favicon.ico`.
+Please generate a multi-resolution ICO from the PNG (or SVG) locally:
+
+Using ImageMagick locally (after generating PNG):
+
+convert assets/img/favicons/favicon-96x96.png -define icon:auto-resize=64,48,32,16 assets/img/favicons/favicon.ico
+
+Then commit the generated file to replace this placeholder.

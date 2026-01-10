@@ -1,0 +1,8 @@
+REPLACE_ME: This is a placeholder for `favicon-96x96.png`.
+Please generate a real 96x96 PNG from `assets/img/favicons/favicon.svg`:
+
+Using ImageMagick locally:
+
+convert assets/img/favicons/favicon.svg -background none -resize 96x96 assets/img/favicons/favicon-96x96.png
+
+Then commit the generated file to replace this placeholder.
