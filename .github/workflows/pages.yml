@@ -29,7 +29,11 @@ jobs:
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Use a Personal Access Token with `repo` scope if branch protection
+          # prevents the default GITHUB_TOKEN from pushing. Create a secret
+          # named `GH_PAGES_TOKEN` in repository Settings → Secrets → Actions
+          # and give it a PAT with repo permissions.
+          github_token: ${{ secrets.GH_PAGES_TOKEN }}
           publish_dir: ./_site
           publish_branch: gh-pages
           keep_files: false
