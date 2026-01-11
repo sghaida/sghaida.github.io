@@ -3,7 +3,7 @@ layout: post
 title: "Base64 Encoding/Decoding using C"
 date: 2012-11-14 09:00:00 +0000
 categories: [programming]
-tags: [c/c++,programming]
+tags: [c/c++, programming]
 ---
 
 # Base64 Encoding and Decoding on Windows Using Crypt32

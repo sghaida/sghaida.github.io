@@ -3,7 +3,7 @@ layout: post
 title: "Useful LDAP Queries against Active Directory"
 date: 2011-10-25 09:00:00 +0000
 categories: [Infra]
-tags: [OpenLDAP, Infra]
+tags: [openldap, infra]
 ---
 
 

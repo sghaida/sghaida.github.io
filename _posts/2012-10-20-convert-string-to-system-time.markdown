@@ -3,7 +3,7 @@ layout: post
 title: "Convert string to SYSTEMTIME using C"
 date: 2012-10-20 09:00:00 +0000
 categories: [programming]
-tags: [c/c++,programming]
+tags: [c/c++, programming]
 ---
 
 # Converting a Date String to `SYSTEMTIME` (C and C#)

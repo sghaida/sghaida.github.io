@@ -3,7 +3,7 @@ layout: post
 title: "Logging Support for DLLs using C"
 date: 2012-11-7 09:00:00 +0000
 categories: [programming]
-tags: [c/c++,programming]
+tags: [c/c++, programming]
 ---
 
 # Writing Flexible Debug Logs in a C DLL

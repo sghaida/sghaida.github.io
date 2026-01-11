@@ -1,0 +1,84 @@
+{% assign tag_entries = site.tags %}
+{% assign max_count = 1 %}
+{% for tag_entry in tag_entries %}
+  {% assign tag_name = tag_entry[0] %}
+  {% assign count = tag_entry[1] | size %}
+  {% if count > max_count %}
+    {% assign max_count = count %}
+  {% endif %}
+{% endfor %}
+
+{% if tag_entries.size > 0 %}
+  <section class="tag-cloud-panel mt-4">
+    <style>
+      .tag-cloud-panel .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 0.4px;
+        margin-top: 0.35rem;
+        line-height: 1;
+      }
+
+      .tag-cloud-panel .tag-cloud a {
+        border-radius: 999px;
+        padding: 0.1rem 0.65rem;
+        line-height: 1;
+        font-weight: 600;
+        color: var(--text-muted-color);
+        opacity: 0.82;
+        transition: color 0.2s ease, background 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+        margin: 0;
+      }
+
+      .tag-cloud-panel .tag-cloud a:hover,
+      .tag-cloud-panel .tag-cloud a:focus-visible {
+        color: var(--text-color);
+        background: var(--btn-border-color);
+        box-shadow: var(--tag-shadow);
+        opacity: 1;
+      }
+
+      .tag-cloud-panel .tag-weight-1 {
+        font-size: 0.85rem;
+      }
+
+      .tag-cloud-panel .tag-weight-2 {
+        font-size: 0.95rem;
+      }
+
+      .tag-cloud-panel .tag-weight-3 {
+        font-size: 1rem;
+      }
+
+      .tag-cloud-panel .tag-weight-4 {
+        font-size: 1.1rem;
+      }
+
+      .tag-cloud-panel .tag-weight-5 {
+        font-size: 1.2rem;
+      }
+    </style>
+
+    <h2 class="panel-heading">{{ site.data.locales[include.lang].panel.tag_cloud | default: 'Tag Cloud' }}</h2>
+      <div class="tag-cloud">
+      {% for tag_entry in tag_entries %}
+        {% assign tag_name = tag_entry[0] %}
+        {% assign count = tag_entry[1] | size %}
+        {% assign weight = count | times: 5 | divided_by: max_count %}
+        {% if weight < 1 %}
+          {% assign weight = 1 %}
+        {% endif %}
+        {% if weight > 5 %}
+          {% assign weight = 5 %}
+        {% endif %}
+        {% capture tag_path %}/tags/{{ tag_name | slugify }}{% endcapture %}
+          <a href="{{ tag_path | relative_url }}"
+            class="tag-cloud-link tag-weight-{{ weight }}"
+            title="{{ count }} {% if count == 1 %}post{% else %}posts{% endif %} tagged {{ tag_name }}"
+            aria-label="View the {{ count }} posts tagged {{ tag_name }}">
+          {{ tag_name }}
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

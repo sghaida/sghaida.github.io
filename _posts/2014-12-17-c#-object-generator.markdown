@@ -3,7 +3,7 @@ layout: post
 title: "C# Object Generator"
 date: 2014-12-17 09:00:00 +0000
 categories: [csharp, programming]
-tags: [csharp, object generation, programming]
+tags: [csharp, programming]
 ---
 
 
