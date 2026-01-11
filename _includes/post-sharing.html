@@ -37,8 +37,23 @@
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(url).then(function(){ showFeedback(fb) }).catch(function(){ window.location.href = 'mailto:?body=' + encodeURIComponent(url) })
     } else {
-      try{ var ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showFeedback(fb) }
-      catch(e){ showFeedback(fb, url || 'Copied'); if(!fb){ window.prompt('Copy this link', url) } }
+      var ta
+      try{
+        ta = document.createElement('textarea')
+        ta.value = url
+        document.body.appendChild(ta)
+        ta.select()
+        if(document.execCommand('copy')){
+          showFeedback(fb)
+        } else {
+          throw new Error('execCommand(copy) returned false')
+        }
+      }catch(e){
+        showFeedback(fb, url || 'Copied')
+        if(!fb){ window.prompt('Copy this link', url) }
+      }finally{
+        if(ta){ document.body.removeChild(ta) }
+      }
     }
   }
 
