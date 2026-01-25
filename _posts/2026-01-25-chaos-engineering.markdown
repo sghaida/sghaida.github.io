@@ -243,7 +243,7 @@ This matters because it proves:
 
 ### C4 Level 1- System context
 
-![System context](https://sghaida.github.io/assets/img/chaos-engineering/c4-1-context.svg)
+<img src=assets/img/chaos-engineering/c4-1-context.svg alt="System context">
 
 ### C4 Level 2 — Containers
 
