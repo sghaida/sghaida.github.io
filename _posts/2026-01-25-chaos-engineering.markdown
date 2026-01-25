@@ -265,11 +265,11 @@ This matters because it proves:
 
 What exists today covers the “safe HTTP chaos MVP” well. The next step is turning this into a **repeatable resilience workflow**, not just a fault injector.
 
-Here’s the forward plan, aligned with what you already built, and using RFC ideas only for what’s not implemented yet:
+Here’s the forward plan, aligned with what I already built, and using RFC ideas only for what’s not implemented yet:
 
 ### 1) Add k6-loadgen as a first-class workflow
 
-Right now, you can run curl-based tests. The next step is:
+Right now, we can run curl-based tests. The next step is:
 
 * let experiments include a **load generation plan**
 * run it during the chaos window
@@ -287,7 +287,7 @@ A practical direction:
 
 ### 2) Manual abort as a first-class control
 
-This came up in your earlier discussions too: GitOps deletion is not always fast enough.
+This came up in while thinking about the problem: GitOps deletion is not always fast enough.
 
 Add a spec control field:
 
@@ -316,11 +316,11 @@ This is where chaos becomes production-grade:
 * evaluate periodically
 * abort immediately if breached
 
-You don’t need to implement the full platform stack at once. Even a small set (p99 + 5xx) goes a long way.
+I don’t need to implement the full platform stack at once. Even a small set (p99 + 5xx) goes a long way.
 
 ### 4) Expand fault types carefully (only if needed)
 
-Your current scope is intentionally narrow and safe. If you expand, do it with the same philosophy:
+The current scope is intentionally narrow and safe. If expanded, I should do it with the same philosophy:
 
 * bounded pod delete (maxPodsAffected)
 * scaling faults with snapshot+restore
