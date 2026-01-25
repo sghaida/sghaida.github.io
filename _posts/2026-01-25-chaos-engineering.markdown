@@ -243,11 +243,11 @@ This matters because it proves:
 
 ### C4 Level 1- System context
 
-![System context](../assets/img/chaos-engineering/c4-1-context.svg)
+![System context](https://sghaida.github.io/assets/img/chaos-engineering/c4-1-context.svg)
 
 ### C4 Level 2 — Containers
 
-![Containers](../assets/img/chaos-engineering/c4-2-containers.svg)
+![Containers](https://sghaida.github.io/assets/img/chaos-engineering/c4-2-containers.svg)
 
 ### Sequence — GitOps apply → policy gate → run → TTL cleanup
 
