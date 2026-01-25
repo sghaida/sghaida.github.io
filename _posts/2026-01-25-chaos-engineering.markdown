@@ -243,23 +243,23 @@ This matters because it proves:
 
 ### C4 Level 1- System context
 
-![System context](/assets/img/chaos-engineering/c4-1-context.svg)
+![System context](../assets/img/chaos-engineering/c4-1-context.svg)
 
 ### C4 Level 2 — Containers
 
-![Containers](/assets/img/chaos-engineering/c4-2-containers.svg)
+![Containers](../assets/img/chaos-engineering/c4-2-containers.svg)
 
 ### Sequence — GitOps apply → policy gate → run → TTL cleanup
 
-![GitOps flow](/assets/img/chaos-engineering/gitops-flow.svg)
+![GitOps flow](../assets/img/chaos-engineering/gitops-flow.svg)
 
 ### Sequence — Inbound vs Outbound
 
-![Inbound vs Outbound](/assets/img/chaos-engineering/inbound-vs-outbound.svg)
+![Inbound vs Outbound](../assets/img/chaos-engineering/inbound-vs-outbound.svg)
 
 ### “Blast radius story” diagram — why other routes don’t break
 
-![Blast radius](/assets/img/chaos-engineering/blast-radius.svg)
+![Blast radius](../assets/img/chaos-engineering/blast-radius.svg)
 
 ## How to take it forward (roadmap)
 
@@ -332,7 +332,7 @@ But the key: don’t lose the “shared cluster safe” property.
 
 #### adding k6-loadgen (roadmap)
 
-![k6-loadgen](/assets/img/chaos-engineering/k6-loadgen.svg)
+![k6-loadgen](../assets/img/chaos-engineering/k6-loadgen.svg)
 
 ## Closing thought: chaos as a capability, not a product
 
