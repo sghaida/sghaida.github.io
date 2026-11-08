@@ -65,12 +65,12 @@ file as equally risky.
 ## What `chnq` measures
 
 The analyzer is intentionally narrow. It currently targets Go repositories
-and never executes the analyzed repository. It reports four structural
-signals:
+and never executes the analyzed repository. It reports four weighted
+maintainability signals:
 
 | Dimension | Weight | Signal |
 | --- | ---: | --- |
-| Complexity | 40% | Branches, boolean conditions, nesting, and control-flow constructs |
+| Complexity | 40% | Branches, boolean conditions, nesting, and control flow |
 | Structure | 25% | Oversized functions, deep nesting, and oversized files |
 | Duplication | 20% | Repeated contiguous 35-token blocks across functions |
 | Coupling | 15% | Go-module-local package dependencies |
@@ -80,11 +80,25 @@ reported for packages and files, and the analyzer identifies low-scoring
 hotspots. That last part is important for an agent: a repository score can
 look acceptable while one file is a poor place to add another feature.
 
+It also reports three independent architecture dimensions. These do not change
+the existing weighted overall score, but can be enforced through policy:
+
+| Dimension | Signal |
+| --- | --- |
+| Cyclic dependencies | Packages participating in internal import cycles |
+| Interface compliance | Unused or overly broad interfaces |
+| Duck typing | Concrete method sets satisfying non-empty interfaces |
+
+The interface and duck-typing analysis is deliberately conservative. It uses
+Go AST method-set evidence and does not replace the compiler or a full type
+checker. The default `broad_interface_threshold` is five methods.
+
 This is a heuristic, not a universal definition of maintainability. It does
-not measure semantic correctness, test quality, security, cohesion, Git churn,
-architecture violations, or semantic clones. The repository README documents
-those boundaries explicitly. A score is a signal for prioritization, not a
-certification.
+not measure semantic correctness, test quality, security, cohesion, semantic
+clones, or architecture-layer violations. Optional Git churn analysis reports
+changed-line history and Git hotspots, but it is not a measure of commit
+quality. The repository README documents these boundaries explicitly. A score
+is a signal for prioritization, not a certification.
 
 ### A concrete policy
 
@@ -98,8 +112,12 @@ The skill supports a checked-in `.go-code-health.json` policy:
   "minimum_dimensions": {
     "complexity": 6.0,
     "structure": 7.0,
-    "duplication": 8.0
+    "duplication": 8.0,
+    "cyclic_dependencies": 9.0,
+    "interface_compliance": 8.0,
+    "duck_typing": 8.0
   },
+  "broad_interface_threshold": 5,
   "include_tests": false
 }
 ```
@@ -108,13 +126,28 @@ An agent can run a baseline scan before coding and then enforce the same
 threshold after the patch:
 
 ```sh
-./chnq/scripts/analyze.sh /path/to/repository --format json
+./chnq/scripts/analyze.sh /path/to/repository --format json --no-cache
 ./chnq/scripts/analyze.sh /path/to/repository --fail-under 7
 ```
 
 If the configured policy already fails, remediation takes priority over an
 unrelated feature. This is deliberately stricter than producing a
 success-shaped answer and leaving the repository worse than it was.
+
+For repeated scans, `chnq` maintains a local `.chnq-health-status` cache.
+When the repository hash is unchanged, it reuses the complete report. When
+only some files change, a bounded worker pool rescans those files and merges
+the results deterministically. Use `--no-cache` when an agent needs a fresh
+complete scan.
+
+The `--explain-hotspots` option produces a deterministic Markdown explanation
+of the lowest-scoring files or packages, including measured findings and
+suggested refactoring priorities. The explanation is generated from report
+data and source patterns; it does not require an LLM.
+
+For projects that want repository-history context, `--include-git-churn`
+adds changed-line counts and up to five Git hotspots. This option is disabled
+by default because it depends on checkout history.
 
 ## Why this should help an agent
 
